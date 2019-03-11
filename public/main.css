@@ -1,0 +1,185 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+
+body {
+  background-color: #fffaf0;
+  color: #555555;
+  font-family: serif, Arial, Helvetica;
+}
+
+#mainHeader {
+
+  background-color: #111B4D;
+  color: #fff;
+  font-size: 20px;
+  font-weight: Bold;
+  margin: 0;
+}
+
+.navBar {
+  background-color: gray;
+  color: #fff;
+  font: 14px Arial;
+  padding: 0;
+  margin: 0;
+}
+
+.navBar ul {
+  padding: 5px;
+  list-style: none;
+  margin: 0px;
+  padding: 10px;
+  padding-left: 0px;
+
+}
+
+.navBar li {
+  display: inline;
+  margin: 0px;
+  padding: 0px;
+
+}
+
+.navBar a {
+  text-decoration: none;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 0;
+  color: white;
+}
+
+.navBar a:hover {
+  background-color: coral;
+  color: #111B4D;
+}
+
+
+.wfitsForm {
+  /*position: relative;*/
+  /*right: 3px;*/
+  /*top:-30px;*/
+  border-color: #666666;
+  border-top-style: solid;
+  border-bottom-style: solid;
+  margin-top: -145px;
+  width: 100%;
+  height: 100%;
+}
+
+
+.wfitsForm input[type="text"] {
+  position: relative;
+  left: 330px;
+  background-color: #f5f4f9;
+
+}
+
+.wfitsForm .skillSection {
+
+  position: relative;
+  top: 299px;
+  left: 155px;
+  width: 30%;
+
+
+}
+
+.wfitsForm .experienceSection {
+  position: relative;
+  top: -170px;
+  left: 310px;
+  width: 11%;
+
+}
+
+.wfitsForm .desciplineSection {
+  position: relative;
+  top: 145px;
+  left: 520px;
+  width: 0%;
+  height: 0%;
+
+}
+
+.wfitsForm .degreeSection {
+  position: relative;
+  text-align: center;
+  top: -170px;
+  left: 700px;
+  color: 000;
+  width: 12%;
+  height: 0px;
+
+}
+
+.wfitsForm input[type="submit"] {
+
+  position: relative;
+  left: 780px;
+  top: -140px;
+  font-family: sans-serif;
+  font-size: 16px;
+  border: 2px coral soid;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #31285b;
+
+  height: 27px;
+}
+
+.wfitsForm input[type="submit"]:hover {
+  background-color: coral;
+  cursor: pointer;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #003366;
+  border-radius: 10px;
+}
+
+.headingTop {
+
+  text-align: center;
+  position: relative;
+  top: 480px;
+  font-style: italic;
+  color: #737373;
+  border: 2px ridge #000;
+  border-radius: 5px;
+  width: 50%;
+  margin-left: 400px;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+#quotes {
+  text-align: center;
+  width: 50%;
+  position: relative;
+  left: 350px;
+  top: 180px;
+  font-family: fantasy;
+  font-size: 24px;
+
+}
+
+.full-height {
+  height: 100vh;
+}
