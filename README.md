@@ -44,6 +44,9 @@ So you could also do something like:
 3) Input validator
 This is a simple bit of javascript. There were a couple issues I found using the unit testing which I will correct today. Otherwise I think the input validator works as it ought to.
 
+4) Server
+I am using a package called "async" to accomplished asynchronous tasks, such as conducting two or more database queries within the same route.
+
 THINGS TO BE DONE
 1) Double check input validator
 2) Retrieve jobs relevance and relevance ranking from database

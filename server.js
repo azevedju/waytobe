@@ -7,7 +7,6 @@ var handlebars = require('express-handlebars').create({
   defaultLayout: 'home'
 });
 
-//app.use(express.static(__dirname + '/public'));
 app.use(express.static('public'));
 
 app.engine('handlebars', handlebars.engine);
@@ -18,6 +17,9 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+
+//Main route
+//Grabs list of job names and industry names to populate Top Skills Needed dropdown boxes
 app.get("/", function (req, res, next) {
   var context = {}
 
@@ -47,11 +49,13 @@ app.get("/", function (req, res, next) {
     });
 });
 
-
+//What Fits My Skills post route
+//Asks for JobsName and JobsDescription from the database based on results which are LIKE user input
+//Jobs relevance needs to be implemented
 app.post("/wfms", function (req, res, next) {
   var context = {}
 
-  var jobsMatchQuery = 'SELECT Skills.SkillsName, Jobs.JobsName FROM Skills2Jobs  Join Jobs on Jobs.id = Skills2Jobs.JobID  Join Skills on Skills2Jobs.SkillID = Skills.id  where Skills.SkillsName like  ? ';
+  var jobsMatchQuery = 'SELECT Jobs.JobsName, Jobs.JobsDescription FROM Skills2Jobs  Join Jobs on Jobs.id = Skills2Jobs.JobID  Join Skills on Skills2Jobs.SkillID = Skills.id  where Skills.SkillsName like  ? ';
   var jobsQuery = "SELECT * FROM Jobs GROUP BY id"
   var industryQuery = "SELECT * FROM Industries GROUP BY id"
 
@@ -85,11 +89,6 @@ app.post("/wfms", function (req, res, next) {
     });
 });
 
-app.get("/getSkillNames", function (req, res, next) {
-  getSkillNames(req, res, next);
-})
-
-
 app.use(function (req, res) {
   res.status(404)
   res.render("404")
@@ -106,47 +105,3 @@ app.set(port);
 app.listen(port, () => {
   console.log(`Served piping hot at http://localhost:${port}`)
 });
-
-function getAllJobs(req, res, next) {
-  mysql.pool.query("SELECT * FROM Jobs GROUP BY id", function (err, rows, fields) {
-    if (err) {
-      next(err)
-      return
-    } else {
-      res.send(rows);
-    }
-  })
-}
-
-function getAllSkills(req, res, next) {
-  mysql.pool.query("SELECT * FROM Skills GROUP BY id", function (err, rows, fields) {
-    if (err) {
-      next(err)
-      return
-    } else {
-      res.send(rows);
-    }
-  })
-}
-
-function getSkillNames(req, res, next) {
-  mysql.pool.query("SELECT SkillsName FROM Skills", function (err, rows, fields) {
-    if (err) {
-      next(err)
-      return
-    } else {
-      res.send(rows);
-    }
-  })
-}
-
-function getAllIndustries(req, res, next) {
-  mysql.pool.query("SELECT * FROM Industries GROUP BY id", function (err, rows, fields) {
-    if (err) {
-      next(err)
-      return
-    } else {
-      res.send(rows);
-    }
-  })
-}
