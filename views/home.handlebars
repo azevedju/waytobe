@@ -1,7 +1,7 @@
 <a name="top"></a>
 
 
-<!---   CONFUCIUS QUOTE FILLS MAIN SCREEN WINDOW --- >
+<!--   CONFUCIUS QUOTE FILLS MAIN SCREEN WINDOW -->
 
 <div style="height: 33vh"></div>
 <div class="container">
@@ -15,7 +15,7 @@
   </div>
 </div>
 
-<!---   TOP SKILLS NEEDED DROPDOWN BOXES   --- >
+<!--   TOP SKILLS NEEDED DROPDOWN BOXES   -->
 
 <a name="tsn_form"></a>
 <form name="tsn" action="/tsn" method="POST">
@@ -27,7 +27,7 @@
         <select>
           <option selected disabled>Choose one</option>
           {{#each job}}
-            <option value={{JobsName}}>{{JobsName}}</option>
+          <option value={{JobsName}}>{{JobsName}}</option>
           {{/each}}
           <option value="Hunky Guy">Hunky Guy</option>
         </select>
@@ -37,7 +37,7 @@
         <select>
           <option selected disabled>Choose one</option>
           {{#each industry}}
-            <option value={{IndustryName}}>{{IndustryName}}</option>
+          <option value={{IndustryName}}>{{IndustryName}}</option>
           {{/each}}
           <option value="Hunky Guy Industry">Hunky Guy Industry</option>
         </select>
@@ -51,11 +51,11 @@
   </div>
 </form>
 
-<!---   THIS DIV PUTS ONE SCREEN WORTH OF SPACE BETWEEN THIS PAGE SECTION AND THE NEXT   --- >
+<!--   THIS DIV PUTS ONE SCREEN WORTH OF SPACE BETWEEN THIS PAGE SECTION AND THE NEXT   -->
 
 <div style="height: 100vh"></div>
 
-<!---   WHAT FITS MY SKILLS INPUT   --- >
+<!--   WHAT FITS MY SKILLS INPUT   -->
 
 <a name="wfms_form"></a>
 <form name="wfms" action="/wfms" method="POST" id="wfms_form">
@@ -73,61 +73,61 @@
 
       <!--  SPACER DIV  -->
 
-<div class="two columns">&nbsp;</div>
+      <div class="two columns">&nbsp;</div>
 
-<div class="four columns">
-  <label for="ed1">Education 1</label>
-  <input type="text" class="u-full-width" name="ed1" placeholder="Degree or certification">
-</div>
+      <div class="four columns">
+        <label for="ed1">Education 1</label>
+        <input type="text" class="u-full-width" name="ed1" placeholder="Degree or certification">
+      </div>
 
-</div>
+    </div>
 
-<!-- END OF THE FIRST ROW: SO FAR WE HAVE: SKILL 1 - YEARS EXP - SPACER - EDUCATION -->
+    <!-- END OF THE FIRST ROW: SO FAR WE HAVE: SKILL 1 - YEARS EXP - SPACER - EDUCATION -->
 
-<div class="row">
-  <div class="three columns">
-    <label for="skill2">Skill 2</label>
-    <input type="text" class="u-full-width" name="skill2">
-  </div>
-  <div class="two columns">
-    <label for="skill2exp">Experience</label>
-    <input type="number" class="u-full-width" maxlength="2" name="skill2exp" min="1" max="99">
-  </div>
+    <div class="row">
+      <div class="three columns">
+        <label for="skill2">Skill 2</label>
+        <input type="text" class="u-full-width" name="skill2">
+      </div>
+      <div class="two columns">
+        <label for="skill2exp">Experience</label>
+        <input type="number" class="u-full-width" maxlength="2" name="skill2exp" min="1" max="99">
+      </div>
 
-  <div class="two columns">&nbsp;</div>
+      <div class="two columns">&nbsp;</div>
 
-  <div class="four columns">
-    <label for="ed2">Education 2</label>
-    <input type="text" class="u-full-width" name="ed2" placeholder="Degree or certification">
-  </div>
-</div>
-<div class="row">
-  <div class="three columns">
-    <label for="skill3">Skill 3</label>
-    <input type="text" class="u-full-width" name="skill3">
-  </div>
-  <div class="two columns">
-    <label for="skill3exp">Experience</label>
-    <input type="number" class="u-full-width" maxlength="2" name="skill3exp" min="1" max="99">
-  </div>
-</div>
-<div class="row">
-  <div class="three columns">
-    <label for="skill4">Skill 4</label>
-    <input type="text" class="u-full-width" name="skill4">
-  </div>
-  <div class="two columns">
-    <label for="skill4exp">Experience</label>
-    <input type="number" class="u-full-width" maxlength="2" name="skill4exp" min="1" max="99">
-  </div>
-</div>
+      <div class="four columns">
+        <label for="ed2">Education 2</label>
+        <input type="text" class="u-full-width" name="ed2" placeholder="Degree or certification">
+      </div>
+    </div>
+    <div class="row">
+      <div class="three columns">
+        <label for="skill3">Skill 3</label>
+        <input type="text" class="u-full-width" name="skill3">
+      </div>
+      <div class="two columns">
+        <label for="skill3exp">Experience</label>
+        <input type="number" class="u-full-width" maxlength="2" name="skill3exp" min="1" max="99">
+      </div>
+    </div>
+    <div class="row">
+      <div class="three columns">
+        <label for="skill4">Skill 4</label>
+        <input type="text" class="u-full-width" name="skill4">
+      </div>
+      <div class="two columns">
+        <label for="skill4exp">Experience</label>
+        <input type="number" class="u-full-width" maxlength="2" name="skill4exp" min="1" max="99">
+      </div>
+    </div>
 
-<div class="row">
-  <div class="ten columns">
-    <button class="button-primary" name="submit_wfms" onclick="verifyInput(this.form)">Submit</button>
+    <div class="row">
+      <div class="ten columns">
+        <button class="button-primary" name="submit_wfms" onclick="verifyInput(this.form)">Submit</button>
+      </div>
+    </div>
   </div>
-</div>
-</div>
 </form>
 
 <!--  THIS WILL ONLY DISPLAY IF THE PAGE RECEIVES "RESULT" FROM THE EXPRESS SERVER UPON LOAD -->
@@ -149,7 +149,7 @@
           <tr>
             <td>{{JobsName}}</td>
             <td>{{JobsRelevance}}</td>
-            <td>{{JobsDescription}}</td>
+            <td>{{JobDescription}}</td>
           </tr>
           {{/each}}
         </TBODY>
