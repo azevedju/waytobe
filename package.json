@@ -1,0 +1,19 @@
+{
+  "name": "karthauk_db_project",
+  "version": "1.0.0",
+  "description": "Make, view, edit DnD characters",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kyle Karthauser",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.1",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.0",
+    "handlebars": "^4.0.12",
+    "my-sql": "^1.2.15"
+  }
+}
