@@ -1,0 +1,344 @@
+<a name="top"></a>
+
+
+<!--   CONFUCIUS QUOTE FILLS MAIN SCREEN WINDOW -->
+
+<div style="height: 33vh"></div>
+<div class="container">
+  <div class="row">
+    <div class="twelve columns">
+      <center>
+        <h3><i>Choose a job you love, and you will never have to work a day in your life.</i></h3>
+      </center>
+      <div style="height: 33vh"></div>
+    </div>
+  </div>
+</div>
+
+<!--   TOP SKILLS NEEDED DROPDOWN BOXES   -->
+<!-- Top Skills Needed Job Title Form -->
+<h3>Top Skills Needed</h3>
+<a name="tsn_form"></a>
+<form name="tsn_jobTitle" action="/tsn_jobTitle" method="POST">
+  <div class="container">
+    <h5>Top Skills Needed by Job Title</h5>
+    <div class="row">
+      <div class="four columns">
+        <label for="jobsearch">Search by Job</label>
+        <select>
+          <option selected disabled>Choose one</option>
+          {{#each job}}
+          <option value={{JobsName}}>{{JobsName}}</option>
+          {{/each}}
+          <option value="Hunky Guy">Hunky Guy</option>
+        </select>
+      </div>
+    </div>
+     <div class="row">
+      <div class="twelve columns">
+        <button type="submit" class="button-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</form>  
+
+<!--  THIS WILL ONLY DISPLAY IF THE PAGE RECEIVES "RESULT" FROM THE EXPRESS SERVER UPON LOAD -->
+<!-- Results Table for Top Skills Needed by Job Title -->
+{{#if result}}
+<div class="container">
+  <div class="row">
+    <div class="twelve columns">
+      <Table id="tsn_jobTitle_results">
+        <THEAD>
+          <tr>
+            <th>Skill Title</th>
+            <th>Skill Relevance</th>
+          </tr>
+        </THEAD>
+        <TBODY>
+          {{#each result}}
+          <tr>
+            <td>{{SkillsName}}</td>
+            <td>{{SkillsRelevance}}</td>>
+          </tr>
+          {{/each}}
+        </TBODY>
+      </Table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="twelve columns">
+      <button type="button" class="button-primary">Download as PDF</button>
+    </div>
+  </div>
+</div>
+{{/if}}
+
+<!-- Top Skills Needed Industry Form -->
+<form name="tsn_industry" action="/tsn_industry" method="POST">
+  <div class="container">
+    <h5>Top Skills Needed by Industry</h5>
+    <div class="row">
+      <div class="four columns">
+        <label for="jobsearch">Search by Industry</label>
+        <select>
+          <option selected disabled>Choose one</option>
+          {{#each industry}}
+          <option value={{IndustryName}}>{{IndustryName}}</option>
+          {{/each}}
+          <option value="Hunky Guy Industry">Hunky Guy Industry</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="twelve columns">
+        <button type="submit" class="button-primary">Submit</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- Results Table for Top Skills Needed by Industry -->
+{{#if result}}
+<div class="container">
+  <div class="row">
+    <div class="twelve columns">
+      <Table id="tsn_industry_results">
+        <THEAD>
+          <tr>
+            <th>Skill Title</th>
+            <th>Skill Relevance</th>
+          </tr>
+        </THEAD>
+        <TBODY>
+          {{#each result}}
+          <tr>
+            <td>{{SkillsName}}</td>
+            <td>{{SkillsRelevance}}</td>>
+          </tr>
+          {{/each}}
+        </TBODY>
+      </Table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="twelve columns">
+      <button type="button" class="button-primary">Download as PDF</button>
+    </div>
+  </div>
+</div>
+{{/if}}
+
+<!--   THIS DIV PUTS ONE SCREEN WORTH OF SPACE BETWEEN THIS PAGE SECTION AND THE NEXT   -->
+
+<div style="height: 100vh"></div>
+
+<!--   WHAT FITS MY SKILLS INPUT   -->
+
+<a name="wfms_form"></a>
+<form name="wfms" action="/wfms" method="POST" id="wfms_form">
+  <div class="container">
+    <h3>What Fits My Skills</h3>
+    <div class="row">
+      <div class="three columns">
+        <label for="skill1">Skill 1</label>
+        <input type="text" class="u-full-width" name="skill1">
+      </div>
+      <div class="two columns">
+        <label for="skill1exp">Experience</label>
+        <input type="number" class="u-full-width" maxlength="2" name="skill1exp" min="1" max="99">
+      </div>
+
+      <!--  SPACER DIV  -->
+
+      <div class="two columns">&nbsp;</div>
+
+      <div class="four columns">
+        <label for="ed1">Education 1</label>
+        <input type="text" class="u-full-width" name="ed1" placeholder="Degree or certification">
+      </div>
+
+    </div>
+
+    <!-- END OF THE FIRST ROW: SO FAR WE HAVE: SKILL 1 - YEARS EXP - SPACER - EDUCATION -->
+
+    <div class="row">
+      <div class="three columns">
+        <label for="skill2">Skill 2</label>
+        <input type="text" class="u-full-width" name="skill2">
+      </div>
+      <div class="two columns">
+        <label for="skill2exp">Experience</label>
+        <input type="number" class="u-full-width" maxlength="2" name="skill2exp" min="1" max="99">
+      </div>
+
+      <div class="two columns">&nbsp;</div>
+
+      <div class="four columns">
+        <label for="ed2">Education 2</label>
+        <input type="text" class="u-full-width" name="ed2" placeholder="Degree or certification">
+      </div>
+    </div>
+    <div class="row">
+      <div class="three columns">
+        <label for="skill3">Skill 3</label>
+        <input type="text" class="u-full-width" name="skill3">
+      </div>
+      <div class="two columns">
+        <label for="skill3exp">Experience</label>
+        <input type="number" class="u-full-width" maxlength="2" name="skill3exp" min="1" max="99">
+      </div>
+    </div>
+    <div class="row">
+      <div class="three columns">
+        <label for="skill4">Skill 4</label>
+        <input type="text" class="u-full-width" name="skill4">
+      </div>
+      <div class="two columns">
+        <label for="skill4exp">Experience</label>
+        <input type="number" class="u-full-width" maxlength="2" name="skill4exp" min="1" max="99">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="ten columns">
+        <button class="button-primary" name="submit_wfms" onclick="verifyInput(this.form)">Submit</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!--  THIS WILL ONLY DISPLAY IF THE PAGE RECEIVES "RESULT" FROM THE EXPRESS SERVER UPON LOAD -->
+
+{{#if result}}
+<div class="container">
+  <div class="row">
+    <div class="twelve columns">
+      <Table id="wfms_results">
+        <THEAD>
+          <tr>
+            <th>Job Title</th>
+            <th>Job Relevance</th>
+            <th>Job Description</th>
+          </tr>
+        </THEAD>
+        <TBODY>
+          {{#each result}}
+          <tr>
+            <td>{{JobsName}}</td>
+            <td>{{JobsRelevance}}</td>
+            <td>{{JobDescription}}</td>
+          </tr>
+          {{/each}}
+        </TBODY>
+      </Table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="twelve columns">
+      <button type="button" class="button-primary">Download as PDF</button>
+    </div>
+  </div>
+</div>
+{{/if}}
+
+<!--  ANOTHER SPACER  -->
+
+<div style="height: 100vh"></div>
+
+<div class="container">
+  <a name="fsn_form"></a>
+  <h3>Future Skills Needed</h3>
+</div>
+
+<script>
+  function verifyInput(form) {
+    skillInputs = []
+    numInputs = []
+
+    skillInputs.push(document.getElementsByName("skill1")[0].value.toLowerCase())
+    skillInputs.push(document.getElementsByName("skill2")[0].value.toLowerCase())
+    skillInputs.push(document.getElementsByName("skill3")[0].value.toLowerCase())
+    skillInputs.push(document.getElementsByName("skill4")[0].value.toLowerCase())
+
+    numInputs.push(document.getElementsByName("skill1exp")[0].value)
+    numInputs.push(document.getElementsByName("skill2exp")[0].value)
+    numInputs.push(document.getElementsByName("skill3exp")[0].value)
+    numInputs.push(document.getElementsByName("skill4exp")[0].value)
+
+    //If all input forms are empty, throw error
+    emptyFlag = true
+    for (skills of skillInputs) {
+      if (skills !== '') {
+        emptyFlag = false
+      }
+
+      if (!/^[a-zA-Z+# ]*$/g.test(skills)) {
+        alert("Job skills field only accepts characters a-z, +, and #.");
+        return
+      }
+    }
+
+    if (emptyFlag == true) {
+      alert('Skills fields cannot be empty.')
+      return
+    }
+
+    //If we get this far, submit the form
+    document.getElementById("wfms_form").submit();
+  }
+
+  //Check to see if results table has been loaded. If so, scroll to it
+  window.addEventListener("load", function (event) {
+    wfms_results = document.getElementById("wfms_results")
+
+    if (wfms_results) {
+      wfms.scrollIntoView();
+    }
+  });
+  /*
+
+  // I wrote this anticipating that search queries would have to match database entries EXACTLY.
+  // I abandoned it midway through once I realized we could use a LIKE query instead of =
+  // It may be useful in the future.
+  // The idea was to check input before submitting to the database
+  // How? First, get a list of all the skills from the database. Then check the user input against all of those skills.
+
+  function checkLegitInput() {
+    alert('func called')
+
+    let enteredData = []
+    let enteredSkills = []
+    let enteredEd = []
+    let enteredJobs = []
+
+    rawInput = document.forms["wfms"].getElementsByTagName("input");
+
+    console.log(rawInput)
+
+    for (val of rawInput) {
+      enteredData.push(val.value)
+    }
+
+    for (entry of enteredData) {
+      alert(entry)
+    }
+    let req = new XMLHttpRequest();
+    let queryPath = '/getSkillNames';
+
+    req.setRequestHeader('Content-Type', 'application/json');
+    req.send(null);
+
+    req.addEventListener('load', function () {
+      if (req.status >= 200 && req.status < 400) {
+        console.log('Skill Names received')
+        skillNames = req.response;
+        return skillNames;
+      } else {
+        alert('Skill names not received.');
+      }
+
+    });
+  }
+*/
+</script>
