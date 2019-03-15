@@ -28,14 +28,14 @@ app.get("/", function (req, res, next) {
       function (parallel_done) {
         mysql.pool.query(jobsQuery, {}, function (err, results) {
           if (err) return parallel_done(err);
-          context.job = results;
+          context.jobTitles = results;
           parallel_done();
         });
       },
       function (parallel_done) {
         mysql.pool.query(industryQuery, {}, function (err, results) {
           if (err) return parallel_done(err);
-          context.industry = results;
+          context.jobIndustries = results;
           parallel_done();
         });
       }
@@ -43,9 +43,93 @@ app.get("/", function (req, res, next) {
     function (err) {
       if (err) console.log(err);
 
+      console.log(context)
+
       res.render('home', context)
     });
 });
+
+//Top Skills Needed Search - Job Title
+//Grabs the list of top skills needed for a given job title and renders 'skills_needed.handlebars'
+app.post('/tsn_jobTitle', function (req, res) {
+  var context = {};
+  var jobsQuery = "SELECT id, JobsName, JobDescription FROM Jobs"
+  var industryQuery = "SELECT * FROM Industries GROUP BY id"
+  var sql = "SELECT S.SkillsName, J.JobsName FROM Skills S INNER JOIN Skills2Jobs SJ ON S.id = SJ.SkillID INNER JOIN Jobs J ON J.id = SJ.JobID WHERE J.id = ?";
+  var inserts = [req.body.JobTitleID];
+
+  async.parallel([
+      function (parallel_done) {
+        mysql.pool.query(jobsQuery, {}, function (err, results) {
+          if (err) return parallel_done(err);
+          context.jobTitles = results;
+          parallel_done();
+        });
+      },
+      function (parallel_done) {
+        mysql.pool.query(industryQuery, {}, function (err, results) {
+          if (err) return parallel_done(err);
+          context.jobIndustries = results;
+          parallel_done();
+        });
+      },
+      function (parallel_done) {
+        mysql.pool.query(sql, inserts, function (err, results) {
+          if (err) return parallel_done(err);
+          context.Skills = results;
+          parallel_done();
+        });
+      }
+    ],
+    function (err) {
+      if (err) console.log(err);
+
+      console.log(context)
+      res.render('home', context)
+    });
+})
+
+
+//Top Skills Needed Search - Job Industry
+//Grabs the list of top skills needed for a given job industry and renders 'skills_needed.handlebars'
+app.post('/tsn_jobIndustry', function (req, res) {
+  var context = {};
+  var jobsQuery = "SELECT id, JobsName, jobDescription FROM Jobs"
+  var industryQuery = "SELECT * FROM Industries GROUP BY id"
+  var sql = "SELECT S.SkillsName, I.industryName FROM Skills S INNER JOIN Skills2Jobs SJ ON S.id = SJ.SkillID INNER JOIN Jobs J ON J.id = SJ.JobID INNER JOIN Jobs2Industries IJ ON J.id = IJ.JobID INNER JOIN Industries I ON I.id = IJ.IndustryID WHERE I.id = ?";
+  var inserts = [req.body.JobIndustryID]
+
+  async.parallel([
+      function (parallel_done) {
+        mysql.pool.query(jobsQuery, {}, function (err, results) {
+          if (err) return parallel_done(err);
+          context.jobTitles = results;
+          parallel_done();
+        });
+      },
+      function (parallel_done) {
+        mysql.pool.query(industryQuery, {}, function (err, results) {
+          if (err) return parallel_done(err);
+          context.jobIndustries = results;
+          parallel_done();
+        });
+      },
+      function (parallel_done) {
+        mysql.pool.query(sql, inserts, function (err, results) {
+          if (err) return parallel_done(err);
+          context.Skills = results;
+          parallel_done();
+        });
+      }
+    ],
+    function (err) {
+      if (err) console.log(err);
+
+      console.log(context)
+      res.render('home', context)
+    });
+})
+
 
 //What Fits My Skills post route
 //Asks for JobsName and JobsDescription from the database based on results which are LIKE user input
@@ -53,82 +137,91 @@ app.get("/", function (req, res, next) {
 app.post("/wfms", function (req, res, next) {
   var context = {}
 
-  const jobsMatchQuery = repeat('SELECT Jobs.JobsName, Jobs.JobDescription FROM Skills2Jobs  Join Jobs on Jobs.id = Skills2Jobs.JobID  Join Skills on Skills2Jobs.SkillID = Skills.id  where Skills.SkillsName like ?;', 4);
-  const jobsQuery = "SELECT * FROM Jobs GROUP BY id"
-  const industryQuery = "SELECT * FROM Industries GROUP BY id"
+  var jobsMatchQuery = repeat('SELECT Jobs.JobsName, Jobs.JobDescription FROM Skills2Jobs  Join Jobs on Jobs.id = Skills2Jobs.JobID  Join Skills on Skills2Jobs.SkillID = Skills.id  where Skills.SkillsName like ?;', 4);
+  var jobsQuery = "SELECT * FROM Jobs GROUP BY id"
+  var industryQuery = "SELECT * FROM Industries GROUP BY id"
 
   //Populate array with user input to send with SQL query
-  let userInput = []
+  var userInput = []
 
   userInput.push(req.body.skill1.toLowerCase())
   userInput.push(req.body.skill2.toLowerCase())
   userInput.push(req.body.skill3.toLowerCase())
   userInput.push(req.body.skill4.toLowerCase())
 
+
+
   async.waterfall([
       //Grab job names and industries to populate Top Skills Needed dropdown
-      function parallelFunc(results, callback) {
-        async.parallel([
-            function (parallel_done) {
-              mysql.pool.query(jobsQuery, {}, function (err, results) {
-                if (err) return parallel_done(err);
-                context.job = results;
-                parallel_done();
-              });
-            },
-            function (parallel_done) {
-              mysql.pool.query(industryQuery, {}, function (err, results) {
-                if (err) return parallel_done(err);
-                context.industry = results;
-                parallel_done();
-              });
-            },
-            function getJobs(callback) {
-              mysql.pool.query(jobsMatchQuery, userInput, function (err, results) {
-                if (err) {
-                  console.log(err);
-                } else {
-                  //Save current result 
-                  console.log("GETJOBS RESULTS")
-                  console.log(results)
+      function getIndustries(callback) {
+        mysql.pool.query(industryQuery, {}, function (err, results) {
+          if (err) {
+            console.log(err)
+          } else {
+            context.jobIndustries = results;
+            callback(err, results);
+          }
+        })
+      },
 
-                  //Save user inputs for later
-                  context.userInput = userInput
+      function getJobs(results, callback) {
+        mysql.pool.query(jobsQuery, {}, function (err, results) {
+          if (err) {
+            console.log(err)
+          } else {
+            context.jobTitles = results;
+            callback(err, results);
+          }
+        })
+      },
 
-                  //Save job descriptions for later
-                  jobDescriptions = new Map
-                  for (eachEntry of results) {
-                    for (detail of eachEntry) {
-                      jobDescriptions.set(detail.JobsName.toLowerCase(), detail.JobDescription.toLowerCase())
-                    }
-                  }
+      //Begin grabing data for user search terms
+      function getJobs(results, callback) {
+        mysql.pool.query(jobsMatchQuery, userInput, function (err, results) {
+          if (err) {
+            console.log(err);
+          } else {
+            //Save current result 
+            console.log("GETJOBS RESULTS")
+            console.log(results)
 
-                  //If only one job result is returned, it breaks the rest of this.
-                  //If this is the case, we stop here and return that single job.
-                  if (onlyOneJobReturned(results)) {
-                    context.result = results[0]
-                    res.render('home', context)
-                    return
+            //Save user inputs for later
+            context.userInput = userInput
 
-                  } else {
+            //Save job descriptions for later
+            jobDescriptions = new Map
+            for (eachEntry of results) {
+              for (detail of eachEntry) {
+                jobDescriptions.set(detail.JobsName.toLowerCase(), detail.JobDescription.toLowerCase())
+              }
+            }
 
-                    //Grab the name of each job from the results
-                    jobsArray = []
+            //If only one job result is returned, it breaks the rest of this.
+            //If this is the case, we stop here and return that single job.
+            if (onlyOneJobReturned(results)) {
+              context.result = results[0]
+              res.render('home', context)
+              return
 
-                    for (eachRow of results) {
-                      for (job of eachRow) {
-                        jobsArray.push(job.JobsName.toLowerCase())
-                      }
-                    }
+            } else {
 
-                    callback(err, jobsArray, results);
-                  }
+              //Grab the name of each job from the results
+              jobsArray = []
+
+              for (eachRow of results) {
+                for (job of eachRow) {
+                  jobsArray.push(job.JobsName.toLowerCase())
                 }
-              })
-            },
+              }
 
-            function getMatchingSkills(jobsArray, results, callback) {
-              /* Testing 
+              callback(err, jobsArray, results);
+            }
+          }
+        })
+      },
+
+      function getMatchingSkills(jobsArray, results, callback) {
+        /* Testing 
     console.log(Object.entries(results))
     console.log("KEYS")
     console.log("VALUES")
@@ -137,73 +230,64 @@ app.post("/wfms", function (req, res, next) {
     console.log(Object.values(results[0]))
     */
 
-              //This query will get us the skills which match each job name
-              //Create a string which will query as many times as there are jobs
-              let skillsQuery = repeat("SELECT Skills.SkillsName FROM Skills2Jobs Join Jobs on Jobs.id = Skills2Jobs.JobID  Join Skills on Skills2Jobs.SkillID = Skills.id  where Jobs.JobsName = ?;", jobsArray.length)
+        //This query will get us the skills which match each job name
+        //Create a string which will query as many times as there are jobs
+        let skillsQuery = repeat("SELECT Skills.SkillsName FROM Skills2Jobs Join Jobs on Jobs.id = Skills2Jobs.JobID  Join Skills on Skills2Jobs.SkillID = Skills.id  where Jobs.JobsName = ?;", jobsArray.length)
 
-              mysql.pool.query(skillsQuery, jobsArray, function (err, results) {
-                if (err) {
-                  console.log(err);
-                } else {
+        mysql.pool.query(skillsQuery, jobsArray, function (err, results) {
+          if (err) {
+            console.log(err);
+          } else {
 
-                  //Grab the name of each skill from the results
-                  //For each batch of skills, create an array, then push that array to skillsArray 
-                  skillsArray = []
+            //Grab the name of each skill from the results
+            //For each batch of skills, create an array, then push that array to skillsArray 
+            skillsArray = []
 
-                  for (eachRow of results) {
-                    subArray = new Array
-                    for (skill of eachRow) {
-                      subArray.push(skill.SkillsName.toLowerCase())
-                    }
-                    skillsArray.push(subArray)
-                  }
+            for (eachRow of results) {
+              subArray = new Array
+              for (skill of eachRow) {
+                subArray.push(skill.SkillsName.toLowerCase())
+              }
+              skillsArray.push(subArray)
+            }
 
-                  //Now we will create a map, which will allow us to easily reference a job and its associated skills            
-                  skillsMap = new Map
+            //Now we will create a map, which will allow us to easily reference a job and its associated skills            
+            skillsMap = new Map
 
-                  counter = 0
-                  for (eachJob of jobsArray) {
-                    skillsMap.set(eachJob, skillsArray[counter])
+            counter = 0
+            for (eachJob of jobsArray) {
+              skillsMap.set(eachJob, skillsArray[counter])
+              counter++
+            }
+
+            //Finally, we will generate a job relevance rating for each job
+            //We stored the user input in "context.userInput" earlier (it's an array)
+            //We will use that here
+
+            userInput = context.userInput
+            //let relevanceJSON = {}
+            relevanceMap = new Map
+
+            for (const [key, value] of skillsMap) {
+              counter = 0
+              console.log("ENTRY")
+              for (skill of userInput) {
+                if (skill) {
+                  if (value.includes(skill)) {
                     counter++
                   }
-
-                  //Finally, we will generate a job relevance rating for each job
-                  //We stored the user input in "context.userInput" earlier (it's an array)
-                  //We will use that here
-
-                  userInput = context.userInput
-                  //let relevanceJSON = {}
-                  relevanceMap = new Map
-
-                  for (const [key, value] of skillsMap) {
-                    counter = 0
-                    console.log("ENTRY")
-                    for (skill of userInput) {
-                      if (skill) {
-                        if (value.includes(skill)) {
-                          counter++
-                        }
-                        relevanceMap.set(key, counter)
-                      }
-                    }
-                  }
-
-                  //Package job name, job description, and relevance rating
-                  finalResult = JSON.parse(JSON.stringify(addRelevanceRating(jobDescriptions, relevanceMap)))
-                  context.result = finalResult
-
-                  callback(err, results);
+                  relevanceMap.set(key, counter)
                 }
-              })
-            },
-          ],
-          function asyncCallback(err, results) {
-            if (err) {
-              console.log(err);
-            } else {
-              callback(err, results);
+              }
             }
-          });
+
+            //Package job name, job description, and relevance rating
+            finalResult = JSON.parse(JSON.stringify(addRelevanceRating(jobDescriptions, relevanceMap)))
+            context.result = finalResult
+
+            callback(err, results);
+          }
+        })
       }
     ],
     function (err, results) {
@@ -226,7 +310,7 @@ app.use(function (err, req, res, next) {
   res.render("500")
 })
 
-const port = 8004;
+const port = 8003;
 app.set(port);
 app.listen(port, () => {
   console.log(`Served piping hot at http://localhost:${port}`)
